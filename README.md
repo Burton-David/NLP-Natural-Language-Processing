@@ -1,5 +1,5 @@
 # NLP-Natural-Language-Processing
-Commonly Used Code and Examples of NLP projects
+Commonly Used Code for NLP projects
 
 ## data_loading
 * load_text_file(filename): Loads a text file and returns the contents as a string.
