@@ -1,3 +1,5 @@
+from collections import Counter
+import math
 import nltk
 
 
@@ -119,3 +121,35 @@ def flesch_kincaid_grade_level(text):
     syllable_count = sum(nltk.syllable_count(word)
                          for word in nltk.word_tokenize(text))
     score = 0.39
+
+
+# TF-IDF
+
+
+def tf(word, document):
+  """Calculates the term frequency (TF) of a word in a document.
+  TF is the number of times the word appears in the document, divided by the total number of words in the document."""
+  return document.count(word) / len(document)
+
+
+def idf(word, documents):
+  """Calculates the inverse document frequency (IDF) of a word in a collection of documents.
+  IDF is the logarithm of the total number of documents divided by the number of documents that contain the word."""
+  num_documents = len(documents)
+  num_documents_with_word = sum(
+      1 for document in documents if word in document)
+  return math.log(num_documents / num_documents_with_word)
+
+
+def tfidf(word, document, documents):
+  """Calculates the TF-IDF value of a word in a document in a collection of documents.
+  TF-IDF is the product of the word's TF and IDF values."""
+  return tf(word, document) * idf(word, documents)
+
+
+def top_tfidf_words(document, documents, n=10):
+  """Returns the top n words with the highest TF-IDF values in a document in a collection of documents."""
+  words = Counter()
+  for word in document:
+    words[word] = tfidf(word, document, documents)
+  return words.most_common(n)
